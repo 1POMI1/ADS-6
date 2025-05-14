@@ -1,7 +1,12 @@
 // Copyright 2021 NNTU-CS
+#include "tpqueue.h"
 #include <gtest/gtest.h>
 #include <string>
-#include "tpqueue.h"
+
+struct SYM {
+  char ch;
+  int prior;
+};
 
 TEST(lab7, test1) {
     TPQueue<SYM> pqueue;
