@@ -52,12 +52,14 @@ class TPQueue {
     }
   }
 
-  void pop() {
-    if (!head) return;
+  T pop() {
+    if (!head) throw std::out_of_range("Queue is empty");
     Node* temp = head;
+    T result = head->data;
     head = head->next;
     delete temp;
     if (!head) tail = nullptr;
+    return result;
   }
 
   const T& front() const {
@@ -71,3 +73,4 @@ class TPQueue {
 };
 
 #endif  // INCLUDE_TPQUEUE_H_
+
