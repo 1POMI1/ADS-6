@@ -1,8 +1,7 @@
 // Copyright 2021 NNTU-CS
-#include "tpqueue.h"
-
 #include <string>
 #include <gtest/gtest.h>
+#include "tpqueue.h"
 
 struct SYM {
   char ch;
