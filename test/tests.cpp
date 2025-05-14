@@ -1,6 +1,6 @@
 // Copyright 2021 NNTU-CS
-#include <string>
 #include <gtest/gtest.h>
+#include <string>
 #include "tpqueue.h"
 
 struct SYM {
