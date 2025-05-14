@@ -1,6 +1,6 @@
 // Copyright 2022 NNTU-CS
-#include "tpqueue.h"
 #include <iostream>
+#include "tpqueue.h"
 
 struct SYM {
   char ch;
