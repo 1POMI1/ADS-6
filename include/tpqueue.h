@@ -1,71 +1,74 @@
 // Copyright 2022 NNTU-CS
-#ifndef TPQUEUE_H
-#define TPQUEUE_H
+#ifndef INCLUDE_TPQUEUE_H_
+#define INCLUDE_TPQUEUE_H_
+
+#include <stdexcept>
 
 template <typename T>
 class TPQueue {
-private:
-    struct Node {
-        T data;
-        Node* next;
-        Node(const T& d) : data(d), next(nullptr) {}
-    };
+ private:
+  struct Node {
+    T data;
+    Node* next;
+    explicit Node(const T& d) : data(d), next(nullptr) {}
+  };
 
-    Node* head;
-    Node* tail;
+  Node* head;
+  Node* tail;
 
-public:
-    TPQueue() : head(nullptr), tail(nullptr) {}
+ public:
+  TPQueue() : head(nullptr), tail(nullptr) {}
 
-    ~TPQueue() {
-        while (!isEmpty()) {
-            pop();
-        }
+  ~TPQueue() {
+    while (!isEmpty()) {
+      pop();
+    }
+  }
+
+  void push(const T& value) {
+    Node* newNode = new Node(value);
+
+    if (!head) {
+      head = tail = newNode;
+      return;
     }
 
-    void push(const T& value) {
-        Node* newNode = new Node(value);
-
-        if (!head) {
-            head = tail = newNode;
-            return;
-        }
-
-        if (value.prior > head->data.prior) {
-            newNode->next = head;
-            head = newNode;
-            return;
-        }
-
-        Node* current = head;
-        while (current->next && current->next->data.prior >= value.prior) {
-            current = current->next;
-        }
-
-        newNode->next = current->next;
-        current->next = newNode;
-
-        if (!newNode->next) {
-            tail = newNode;
-        }
+    if (value.prior > head->data.prior) {
+      newNode->next = head;
+      head = newNode;
+      return;
     }
 
-    void pop() {
-        if (!head) return;
-        Node* temp = head;
-        head = head->next;
-        delete temp;
-        if (!head) tail = nullptr;
+    Node* current = head;
+    while (current->next && current->next->data.prior >= value.prior) {
+      current = current->next;
     }
 
-    const T& front() const {
-        if (!head) throw std::out_of_range("Queue is empty");
-        return head->data;
-    }
+    newNode->next = current->next;
+    current->next = newNode;
 
-    bool isEmpty() const {
-        return head == nullptr;
+    if (!newNode->next) {
+      tail = newNode;
     }
+  }
+
+  void pop() {
+    if (!head) return;
+    Node* temp = head;
+    head = head->next;
+    delete temp;
+    if (!head) tail = nullptr;
+  }
+
+  const T& front() const {
+    if (!head) throw std::out_of_range("Queue is empty");
+    return head->data;
+  }
+
+  bool isEmpty() const {
+    return head == nullptr;
+  }
 };
 
-#endif // INCLUDE_TPQUEUE_H_
+#endif  // INCLUDE_TPQUEUE_H_
+
