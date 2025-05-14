@@ -1,15 +1,71 @@
 // Copyright 2022 NNTU-CS
-#ifndef INCLUDE_TPQUEUE_H_
-#define INCLUDE_TPQUEUE_H_
+#ifndef TPQUEUE_H
+#define TPQUEUE_H
 
-template<typename T>
+template <typename T>
 class TPQueue {
-  // реализация шаблона очереди с приоритетом на связанном списке
+private:
+    struct Node {
+        T data;
+        Node* next;
+        Node(const T& d) : data(d), next(nullptr) {}
+    };
+
+    Node* head;
+    Node* tail;
+
+public:
+    TPQueue() : head(nullptr), tail(nullptr) {}
+
+    ~TPQueue() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+
+    void push(const T& value) {
+        Node* newNode = new Node(value);
+
+        if (!head) {
+            head = tail = newNode;
+            return;
+        }
+
+        if (value.prior > head->data.prior) {
+            newNode->next = head;
+            head = newNode;
+            return;
+        }
+
+        Node* current = head;
+        while (current->next && current->next->data.prior >= value.prior) {
+            current = current->next;
+        }
+
+        newNode->next = current->next;
+        current->next = newNode;
+
+        if (!newNode->next) {
+            tail = newNode;
+        }
+    }
+
+    void pop() {
+        if (!head) return;
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+        if (!head) tail = nullptr;
+    }
+
+    const T& front() const {
+        if (!head) throw std::out_of_range("Queue is empty");
+        return head->data;
+    }
+
+    bool isEmpty() const {
+        return head == nullptr;
+    }
 };
 
-struct SYM {
-  char ch;
-  int prior;
-};
-
-#endif  // INCLUDE_TPQUEUE_H_
+#endif // INCLUDE_TPQUEUE_H_
